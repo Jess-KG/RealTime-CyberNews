@@ -210,7 +210,7 @@
       const el = document.createElement('div');
       el.className = 'cyber-marker';
       el.style.background = severities[target.severity];
-      el.style.boxShadow = `0 0 8px ${target.severity}`;
+      el.style.boxShadow = `0 0 8px ${severities[target.severity]}`;
 
       // Create popup
       const popup = new maplibregl.Popup({
@@ -266,6 +266,8 @@
 
       const eventCard = document.createElement('div');
       eventCard.className = 'event-card';
+      eventCard.dataset.id = target.id;
+
       eventCard.innerHTML = `
 
               <div class="event-card-header">
@@ -294,6 +296,14 @@
                 </div>
               </div>`
 
+      eventCard.addEventListener('click', () => {
+        const id = eventCard.dataset.id;
+        const incident = incidents.find(target => target.id == id);
+        console.log(incident.id);
+        map.flyTo({
+          center: incident.coordinates
+        });
+      })
       eventsList.appendChild(eventCard);
     })
     // Create marker element
